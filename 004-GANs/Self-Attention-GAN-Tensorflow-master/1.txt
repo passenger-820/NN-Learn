@@ -1,0 +1,1 @@
+https://github.com/taki0112/Self-Attention-GAN-Tensorflow

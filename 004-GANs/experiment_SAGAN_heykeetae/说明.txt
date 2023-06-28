@@ -1,0 +1,285 @@
+sagan_1:
+parameter.py
+    # Model hyper-parameters
+    parser.add_argument('--model', type=str, default='sagan', choices=['sagan', 'qgan'])
+    parser.add_argument('--adv_loss', type=str, default='wgan-gp', choices=['wgan-gp', 'hinge'])
+    parser.add_argument('--version', type=str, default='sagan_1')
+    这里损失函数选错了
+    # Training setting
+        parser.add_argument('--total_step', type=int, default=300, help='how many times to update the generator')
+    # using pretrained
+        parser.add_argument('--pretrained_model', type=int, default=None)
+    # Step size
+        parser.add_argument('--log_step', type=int, default=10)
+        parser.add_argument('--sample_step', type=int, default=30, help='intervals to sample images')
+        parser.add_argument('--model_save_step', type=float, default=1.0)
+trainer.py
+    # Data iterator 数据迭代器
+        data_iter = iter(self.data_loader)
+        step_per_epoch = len(self.data_loader)
+        model_save_step = int(self.model_save_step * step_per_epoch)
+    # Sample images
+        if (step + 1) % self.sample_step == 0:
+            fake_images,_,_= self.G(fixed_z)
+            save_image(denorm(fake_images.data),
+                       os.path.join(self.sample_path, '{}_fake.png'.format(step + 1)))
+
+        if (step+1) % model_save_step==0:
+            torch.save(self.G.state_dict(),
+                       os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+            torch.save(self.D.state_dict(),
+                       os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+
+sagan_2:
+parameter.py
+    # Model hyper-parameters
+    parser.add_argument('--model', type=str, default='sagan', choices=['sagan', 'qgan'])
+    parser.add_argument('--adv_loss', type=str, default='hinge', choices=['wgan-gp', 'hinge'])
+    parser.add_argument('--version', type=str, default='sagan_2')
+    这里损失函数选错了
+    # Training setting
+        parser.add_argument('--total_step', type=int, default=30, help='how many times to update the generator')
+    # using pretrained
+        parser.add_argument('--pretrained_model', type=int, default=None)
+    # Step size
+        parser.add_argument('--log_step', type=int, default=1)
+        parser.add_argument('--sample_step', type=int, default=3, help='intervals to sample images')
+        parser.add_argument('--model_save_step', type=float, default=1.0)
+trainer.py
+    # Data iterator 数据迭代器
+        data_iter = iter(self.data_loader)
+        step_per_epoch = len(self.data_loader)
+        model_save_step = int(self.model_save_step * step_per_epoch)
+    # Sample images
+        if (step + 1) % 3 == 0:
+            fake_images,_,_= self.G(fixed_z)
+            save_image(denorm(fake_images.data),
+                       os.path.join(self.sample_path, '{}_fake.png'.format(step + 1)))
+
+        if (step+1) % 3==0:
+            torch.save(self.G.state_dict(),
+                       os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+            torch.save(self.D.state_dict(),
+                       os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+
+sagan_3:
+parameter.py
+    # Model hyper-parameters
+    parser.add_argument('--model', type=str, default='sagan', choices=['sagan', 'qgan'])
+    parser.add_argument('--adv_loss', type=str, default='hinge', choices=['wgan-gp', 'hinge'])
+    parser.add_argument('--version', type=str, default='sagan_3')
+    这里损失函数选错了
+    # Training setting
+        parser.add_argument('--total_step', type=int, default=100000, help='how many times to update the generator')
+    # using pretrained
+        parser.add_argument('--pretrained_model', type=int, default=None)
+    # Step size
+        parser.add_argument('--log_step', type=int, default=10)
+        parser.add_argument('--sample_step', type=int, default=30, help='intervals to sample images')
+        parser.add_argument('--model_save_step', type=float, default=1.0)
+trainer.py
+    # Data iterator 数据迭代器
+        data_iter = iter(self.data_loader)
+        step_per_epoch = len(self.data_loader)
+        model_save_step = int(self.model_save_step * step_per_epoch)
+    # Sample images
+        if (step + 1) % 30 == 0:
+            fake_images,_,_= self.G(fixed_z)
+            save_image(denorm(fake_images.data),
+                       os.path.join(self.sample_path, '{}_fake.png'.format(step + 1)))
+
+        if (step+1) % 30==0:
+            torch.save(self.G.state_dict(),
+                       os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+            torch.save(self.D.state_dict(),
+                       os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+从7530停止 2021 05 21
+ 接续
+trainer.py
+ if (step+1) % 200 ==0:
+    torch.save(self.G.state_dict(),
+               os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+    torch.save(self.D.state_dict(),
+               os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+parameter.py
+ parser.add_argument('--log_step', type=int, default=50)
+
+从11220停止 2021 05 22
+ 接续
+trainer.py
+ if (step+1) % 500 ==0:
+    torch.save(self.G.state_dict(),
+               os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+    torch.save(self.D.state_dict(),
+               os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+parameter.py
+ parser.add_argument('--log_step', type=int, default=100)
+ parser.add_argument('--sample_step', type=int, default=100, help='intervals to sample images')
+ # using pretrained
+    parser.add_argument('--pretrained_model', type=int, default=11200)
+
+从23500停止 2021 05 23
+ 接续
+    # using pretrained
+    parser.add_argument('--pretrained_model', type=int, default=23500)
+
+从32000停止 2021 05 24
+
+
+
+使用源代码试跑，不做更改----
+sagan_4: none
+失败 2021 05 25
+
+使用源代码试跑，不做更改----
+sagan_5: none
+失败 2021 05 26
+
+使用源代码，换个数据集，更加规则的64*64的RGB动漫人脸
+sagan_6: none
+    5712 停一下
+        都是小图，而且在一张大图上，还黑
+
+    13440 停
+        centercrop = false
+        不行啊，生成的图片都是一样的脸了，而且没有分成独立的
+
+    5712开始 独立小图
+        crop = 80 true  samplestep=500
+        又是一样的
+
+    从头开始 samplestap=100 不独立小图
+    crop 用70
+    10080停，效果还行，接下来研究 IS 或者 FID
+
+sagan_7:  用于测试loss的图像绘制
+    parser.add_argument('--total_step', type=int, default=50, help='how many times to update the generator')
+    在trainer中
+        增加 全局变量
+            # history
+            self.history_d_loss_fake = []
+            self.history_d_out_real = []
+            self.history_d_loss = []
+            self.history_g_loss_fake = []
+        在 train 中的 ”for step in range(start, self.total_step)“ 之后,not 循环里面
+            # 绘制loss   .cpu().detach().numpy()
+            plt.plot(self.history_d_out_real, color='red', linewidth=1.0, linestyle='-', label='d_loss_real')
+            plt.plot(self.history_d_loss_fake, color='blue', linewidth=1.0, linestyle='-', label='d_loss_fake')
+            plt.plot(self.history_d_loss, color='yellow', linewidth=1.0, linestyle='-', label='d_loss')
+            plt.plot(self.history_g_loss_fake, color='green', linewidth=1.0, linestyle='-', label='g_loss_fake')
+            plt.xlabel('steps')
+            plt.ylabel('Loss')
+            # plt.ylim(0.75, 1)
+            plt.legend(loc='best')
+            plt.title('Loss at Different Step')
+            plt.show()
+    这些loss都绘制出来了
+
+    parser.add_argument('--total_step', type=int, default=1000, help='how many times to update the generator')
+        全是g_loss_fake的线
+
+    只启用 self.history_d_loss 和 self.history_g_loss_fake
+    parser.add_argument('--total_step', type=int, default=300, help='how many times to update the generator')
+        图片还行，至此ok
+
+sagan_8:  真正训练模型
+    parser.add_argument('--total_step', type=int, default=20000, help='how many times to update the generator')
+    parser.add_argument('--sample_step', type=int, default=400)
+
+    绘制history_d_loss
+    绘制history_g_loss_fake
+
+    保存图像：每次64张小图
+    parser.add_argument('--total_step', type=int, default=26400, help='how many times to update the generator')
+    parser.add_argument('--pretrained_model', type=int, default=19824)
+    25600才对应64个64张图
+    实验ok，封存
+
+sagan_9: 最终实验
+ parameter.py
+    parser.add_argument('--version', type=str, default='sagan_9')
+    parser.add_argument('--total_step', type=int, default=25600, help='how many times to update the generator')
+    parser.add_argument('--pretrained_model', type=int, default=None)
+    parser.add_argument('--log_step', type=int, default=10)
+    parser.add_argument('--sample_step', type=int, default=400)
+    parser.add_argument('--model_save_step', type=float, default=1.0)
+ trainer.py
+    64张小图
+ sagan_models + spectral + utils + main + data_loader 无改动
+ 完成图像生成
+
+ 之后 用 Compute_IS_Final + IS_data_loader 评估IS  STD
+
+sagan_10: 真的最终实验
+    64小图，大图都生成
+
+    记得保存日志！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    出现model collapse了
+
+sagan_10重做：
+
+sagan_11_celeba:
+    dataset = dsets.ImageFolder('F:/PycharmProjects/GANs/data/CelebA', transform=transforms)
+    options.append(transforms.CenterCrop(160))
+
+sagan_11_celeba:
+     parser.add_argument('--pretrained_model', type=int, default=25320)
+        total先不变 parser.add_argument('--total_step', type=int, default=25600, help='how many times to update the generator')
+
+     # 我自己加的
+    if (step + 1) % self.total_step == 0:
+        for j in range(1000):
+            z_new = tensor2var(torch.randn(self.batch_size, self.z_dim))
+            fake_images, _, _ = self.G(z_new)
+            save_image(denorm(fake_images.data),os.path.join(self.sample_path, f'{step + 1}_{j}fake.jpg'))
+            # 独立小图
+            for i in range(0, fake_images.size(0)):
+                save_image(denorm(fake_images.data[i]),os.path.join(self.sample_path, f'{step + 1}_{j}_fake{i + 1}.png'))
+sagan_10:继续
+    parser.add_argument('--version', type=str, default='sagan_10')
+    dataset = dsets.ImageFolder('F:/PycharmProjects/GANs/data/animefaces', transform=transforms)
+    options.append(transforms.CenterCrop(70))
+    parser.add_argument('--pretrained_model', type=int, default=25536)
+    parser.add_argument('--total_step', type=int, default=100000, help='how many times to update the generator')
+    期间不生成小图了
+    计算IS 太小了 1.19 ，不可取
+    计算FID 242.xxx ...........
+
+
+
+除了最后的两个，其他失败的实验均删除了
+
+
+sagan_01:
+ crop 170
+ celeba
+
+sagan_02:
+ animefaces, crop 70
+ total_step 200000
+ batch_size 128太慢了  换成64
+ G_lr 0.0002
+ D_lr 0.0004
+ 不生成用于计算FID和IS的图片
+ 加入visdom（因而取消了自己加的history那些内容，也不用取画图）
+
+sagan_03:
+ 保持celeba原始参数
+ batch_size: 64
+    从202560重跑
+        g_lr  0.002
+        total 300000
+    不跑了，图片不一样了，不再是之前的底片
+
+sagan_04:
+ animefaces, crop 64
+ sample_step 100
+ setup_seed(1022)
+ total_step 600000
+ g_lr  0.0002
+ d_lr  0.0005
+ G 里面Relu()替换为LeakyRelu(0.2)
+
+
+
+
